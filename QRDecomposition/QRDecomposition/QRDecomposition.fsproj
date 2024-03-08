@@ -9,6 +9,7 @@
         <Compile Include="AuxiliaryOperations.fs" />
         <Compile Include="RotationMethod.fs" />
         <Compile Include="Program.fs" />
+        <Compile Include="Matrices.fs" />
     </ItemGroup>
 
     <ItemGroup>
