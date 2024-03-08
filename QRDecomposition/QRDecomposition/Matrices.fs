@@ -7,7 +7,7 @@ let getHilbertMatrix dimension =
     Matrix.init dimension dimension (fun i j -> (/) 1.0 (float(i) + float(j) + 1.0))
 
 let getRandomDiagonalMatrix dimension =
-    Matrix.init dimension dimension (fun i j -> if i = j then float(i * j + 1) else 0.0)
+    Matrix.init dimension dimension (fun _ _ -> Random().NextDouble() * 1000.0)
 
 let getSingleDiagonalMatrix dimension =
     Matrix.init dimension dimension (fun i j -> if i = j then 1.0 else 0.0)

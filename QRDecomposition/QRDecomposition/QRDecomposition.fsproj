@@ -8,12 +8,13 @@
     <ItemGroup>
         <Compile Include="AuxiliaryOperations.fs" />
         <Compile Include="RotationMethod.fs" />
-        <Compile Include="Program.fs" />
         <Compile Include="Matrices.fs" />
+        <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="FsAlg" Version="0.5.13" />
+      <PackageReference Include="Plotly.NET" Version="4.2.0" />
     </ItemGroup>
 
 </Project>
