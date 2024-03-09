@@ -102,7 +102,7 @@ fabric.properties
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
 **/.idea/**/*.xml
-
+**/.idea/**
 
 *.suo
 *.user
