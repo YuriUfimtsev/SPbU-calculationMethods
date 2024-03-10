@@ -9,6 +9,7 @@
         <Compile Include="AuxiliaryOperations.fs" />
         <Compile Include="SimpleIterationMethod.fs" />
         <Compile Include="Seidel'sMethod.fs" />
+        <Compile Include="Matrices.fs" />
     </ItemGroup>
 
     <ItemGroup>

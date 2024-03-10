@@ -1,4 +1,4 @@
-module IterativeMethodsTests
+module IterativeMethodsTests.AuxiliaryOperationsTests
 
 open IterativeMethods
 open NUnit.Framework
@@ -7,9 +7,9 @@ open FsAlg.Generic
 open IterativeMethods.AuxiliaryOperations
 open IterativeMethods.Seidel_sMethod
 
-let areFloatCollectionsEqual zipCollection =
+let areFloatCollectionsEqual targetError zipCollection =
     for pair in zipCollection do
-        pair |> fst |> should (equalWithin 0.1) (pair |> snd) 
+        pair |> fst |> should (equalWithin targetError) (pair |> snd) 
 
 
 [<Test>]
@@ -42,4 +42,4 @@ let ``Sum of the LDR-decomposition components for arbitrary matrix should be equ
     decomposition.LMatrix + decomposition.DMatrix + decomposition.RMatrix
     |> Matrix.toSeq
     |> Seq.zip (arbitraryMatrix |> Matrix.toSeq)
-    |> areFloatCollectionsEqual
+    |> areFloatCollectionsEqual 0.1

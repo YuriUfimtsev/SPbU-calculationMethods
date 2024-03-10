@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <Compile Include="AuxiliaryOperationsTests.fs" />
+        <Compile Include="SimpleIterationMethodTests.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 

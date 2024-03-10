@@ -11,6 +11,11 @@ type RegularMatrix =
     { LMatrix : float Matrix;
       DMatrix : float Matrix;
       RMatrix : float Matrix }
+    
+type IterationMethodResult =
+    { StepsCount : int
+      Solution : float Vector
+      PosteriorError : float }
 
 let calculateEuclideanNorm =
     Matrix.toArray
