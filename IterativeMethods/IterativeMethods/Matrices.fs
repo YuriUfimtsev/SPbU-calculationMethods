@@ -3,6 +3,24 @@ module IterativeMethods.Matrices
 open System
 open FsAlg.Generic
 
+let getSymmetricSparseDiagonalDominanceMatrix dimension =
+    let random = Random()
+    let diagonalElements = Seq.init dimension
+                                (fun _ -> random.NextDouble() * 10000.0)
+                           |> Seq.toArray
+    let nonSymmetricMatrix = Matrix.init dimension dimension
+                                (fun i j ->
+                                if i = j then diagonalElements[i]
+                                elif i > j then
+                                    if j <> 0 && (%) j 10 = 0 then (/) diagonalElements[i] (float(dimension * dimension))
+                                    else 0.0
+                                else 0.0)
+        
+    Matrix.init dimension dimension
+        (fun i j ->
+            if i < j then nonSymmetricMatrix[j, i]
+            else nonSymmetricMatrix[i, j])
+
 let getRandomNumbersMatrix dimension =
     let random = Random();
     Matrix.init dimension dimension (fun _ _ -> random.NextDouble() * 1000.0)
