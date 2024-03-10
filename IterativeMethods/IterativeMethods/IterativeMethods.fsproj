@@ -10,6 +10,7 @@
         <Compile Include="SimpleIterationMethod.fs" />
         <Compile Include="Seidel'sMethod.fs" />
         <Compile Include="Matrices.fs" />
+        <Compile Include="RelaxationMethod.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
