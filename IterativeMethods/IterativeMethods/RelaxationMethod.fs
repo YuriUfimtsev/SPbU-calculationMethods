@@ -15,7 +15,7 @@ let getResiduals (previousSolution : float Vector) (currentSolution : float List
                 (vector_b |> Vector.length)
                 (fun index ->
                 if index >= (currentSolution |> List.length)
-                then matrix_A[j, index] * previousSolution[j]
+                then matrix_A[j, index] * previousSolution[index]
                 else 0.0)
             |> Seq.sum
         firstSummand + secondSummand - vector_b[j]
@@ -45,23 +45,23 @@ let getSolutionComponent (previousSolution : float Vector) (currentSolution : fl
 
 let performStep matrix_A rightVector_b x_previous =
     
-    let rec loop usedEquations resultVector =
+    let rec loop resultVector eqN =
         if (resultVector |> List.length) = (rightVector_b |> Vector.length)
         then resultVector
         else
-            let residuals = getResiduals x_previous resultVector matrix_A rightVector_b
-            let correctResiduals =
-                Seq.init
-                    (residuals |> Vector.length)
-                    (fun i -> if (usedEquations |> List.contains i)
-                                then 0.0
-                                else residuals[i])
-                |> Vector.ofSeq // not essential. Check how works without this step
-            let equationNumber = correctResiduals |> Vector.findIndex ((=) (correctResiduals |> Vector.max))
-            let solutionComponent = getSolutionComponent x_previous resultVector matrix_A rightVector_b equationNumber
-            loop (equationNumber :: usedEquations) (resultVector @ [solutionComponent])
+            //let residuals = getResiduals x_previous resultVector matrix_A rightVector_b
+            // let correctTemporaryResiduals =
+            //     Seq.init
+            //         (residuals |> Vector.length)
+            //         (fun i -> if (usedEquations |> List.contains i)
+            //                     then 0.0
+            //                     else residuals[i])
+            //     |> Vector.ofSeq // not essential. Check how works without this step
+            // let equationNumber = residuals |> Vector.findIndex ((=) (residuals |> Vector.max))
+            let solutionComponent = getSolutionComponent x_previous resultVector matrix_A rightVector_b (eqN + 1)
+            loop (resultVector @ [solutionComponent]) (eqN + 1)
     
-    loop [] []
+    loop [] -1
     |> Vector.ofSeq
 
 let getPosteriorError (solution : float Vector) (matrix_A : float Matrix) rightVector_b =
@@ -77,7 +77,7 @@ let getPosteriorError (solution : float Vector) (matrix_A : float Matrix) rightV
     Vector.init
         (rightVector_b |> Vector.length)
         firstResidualCalculator
-    |> Vector.l2norm
+    |> Vector.max
 
 
 let performMethod matrix_A rightVector_b startSolution targetError =

@@ -12,6 +12,7 @@
         <Compile Include="AuxiliaryOperationsTests.fs" />
         <Compile Include="SimpleIterationMethodTests.fs" />
         <Compile Include="Seidel'sMethodTests.fs" />
+        <Compile Include="RelaxationMethodTests.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 

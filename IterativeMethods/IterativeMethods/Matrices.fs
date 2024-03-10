@@ -46,6 +46,8 @@ let getRandomNumbersVector dimension =
     let random = Random();
     Vector.init dimension (fun _ -> random.NextDouble() * 1000.0)
 
+let getSingleVector dimension =
+    Vector.init dimension (fun _ -> 1.0)
 
 // Matrix from Lebedeva&Pakulina document, variant 5
 let floatThreeDimensionalMatrix () = matrix [[8.673134; 1.041039; -2.677712];
