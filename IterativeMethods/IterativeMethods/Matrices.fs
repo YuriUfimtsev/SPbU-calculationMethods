@@ -3,6 +3,10 @@ module IterativeMethods.Matrices
 open System
 open FsAlg.Generic
 
+let getRandomNumbersMatrix dimension =
+    let random = Random();
+    Matrix.init dimension dimension (fun _ _ -> random.NextDouble() * 1000.0)
+
 let getRandomDiagonalMatrix dimension =
     Matrix.init dimension dimension (fun _ _ -> Random().NextDouble() * 1000.0)
 

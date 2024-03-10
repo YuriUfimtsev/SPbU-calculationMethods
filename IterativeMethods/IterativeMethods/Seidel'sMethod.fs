@@ -29,7 +29,7 @@ let performMethod matrix_A x_0 rightVector_b targetError =
     
     let rec loop stepsCounter x_previous =
         let x = performStep expandedMatrix x_previous rightVector_b
-        let error = calculatePosteriorError expandedMatrix x_previous x
+        let error = calculatePosteriorError expandedMatrix x_previous x |> abs
         if error.CompareTo(targetError) <= 0 then
             { StepsCount = stepsCounter + 1
               Solution = x

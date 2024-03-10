@@ -1,6 +1,5 @@
 module IterativeMethodsTests.AuxiliaryOperationsTests
 
-open IterativeMethods
 open NUnit.Framework
 open FsUnit
 open FsAlg.Generic
