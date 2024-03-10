@@ -16,7 +16,7 @@ let simpleIterationRow matrix rightVector start_solution title =
     let stepsCountList = Seq.init
                             (targetErrors |> List.length)
                             (fun i ->
-                                targetErrors[i]|> SimpleIterationMethod.performMethod matrix_B start_solution vector_c)
+                                targetErrors[i] |> SimpleIterationMethod.performMethod matrix_B start_solution vector_c)
                                 |> Seq.map (fun iterationResult -> $"{iterationResult.StepsCount}")
                                 |> Seq.toList
     title :: stepsCountList
@@ -25,10 +25,20 @@ let Seidel'sRow matrix rightVector start_solution title =
     let stepsCountList = Seq.init
                             (targetErrors |> List.length)
                             (fun i ->
-                                targetErrors[i]|> Seidel_sMethod.performMethod matrix start_solution rightVector)
+                                targetErrors[i] |> Seidel_sMethod.performMethod matrix start_solution rightVector)
                                 |> Seq.map (fun iterationResult -> $"{iterationResult.StepsCount}")
                                 |> Seq.toList
     title :: stepsCountList
+
+let Relaxation'sRow matrix rightVector start_solution title =
+    let stepsCountList = Seq.init
+                            (targetErrors |> List.length)
+                            (fun i ->
+                                targetErrors[i] |> RelaxationMethod.performMethod matrix rightVector start_solution)
+                                |> Seq.map (fun iterationResult -> $"{iterationResult.StepsCount}")
+                                |> Seq.toList
+    title :: stepsCountList
+
 
 let standardMatrix = getRandomDiagonalDominanceMatrix 15
 let standardVector = getRandomNumbersVector 15
@@ -41,9 +51,11 @@ let complexSolution = getRandomNumbersVector 300
 let rows =
     [ simpleIterationRow standardMatrix standardVector start_solution "Simple iteration method steps (15x15)"
       Seidel'sRow standardMatrix standardVector start_solution "Seidel's method  steps (15x15)"
+      Relaxation'sRow standardMatrix standardVector start_solution "Relaxation's method  steps (15x15)"
       emptyRow header.Length
       simpleIterationRow complexMatrix complexVector complexSolution "Simple iteration method steps (300x300)"
       Seidel'sRow complexMatrix complexVector complexSolution "Seidel's method  steps (300x300)"
+      Relaxation'sRow complexMatrix complexVector complexSolution "Relaxation's method  steps (300x300)"
       ] 
 
 Chart.Table(header, rows) |> Chart.withSize (1000, 1500) |> Chart.show
