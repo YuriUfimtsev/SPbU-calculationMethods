@@ -22,7 +22,7 @@ let calculateEigenNumber previousVector vector =
     let denominator = previousVector |> (*) previousVector
     numerator / denominator |> sqrt
 
-let getEigenPair (matrix : float Matrix) initialVector targetError =
+let perform (matrix : float Matrix) initialVector targetError =
     let rec loop stepsCounter x_previous =
         let x = performStep matrix x_previous
         let eigenNumber = calculateEigenNumber x_previous x

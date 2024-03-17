@@ -22,7 +22,7 @@ let calculateEigenNumber (previous_pair : TemporaryPair) (vector_pair : Temporar
     let denominator = previous_pair.Vector_x |> (*) vector_pair.Vector_y
     numerator / denominator
 
-let getEigenPair (matrix : float Matrix) vectorPair targetError =
+let perform (matrix : float Matrix) vectorPair targetError =
     let transposedMatrix = Matrix.transpose matrix
     
     let rec loop stepsCounter previous_pair =
