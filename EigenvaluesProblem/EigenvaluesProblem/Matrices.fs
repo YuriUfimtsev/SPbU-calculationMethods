@@ -5,12 +5,12 @@ open System
 
 let getRandomSymmetricMatrix dimension =
     let random = Random()
-    let multiplier = random.Next(10000);
-    Matrix.initSymmetric dimension (fun _ _ -> random.NextDouble() * float(multiplier))
+    let multiplier = random.Next(10);
+    Matrix.initSymmetric dimension (fun _ _ -> random.NextDouble() * float(multiplier))///
 
 let getSparseMatrix dimension interval =
     let random = Random()
-    let multiplier = random.Next(10000)
+    let multiplier = random.Next(100)
     Matrix.init dimension dimension
         (fun i _ ->
             if i % interval = 0 then random.NextDouble() * float(multiplier)
