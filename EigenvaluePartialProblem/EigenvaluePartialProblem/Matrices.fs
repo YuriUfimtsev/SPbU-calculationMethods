@@ -3,6 +3,14 @@ module EigenvaluePartialProblem.Matrices
 open System
 open FsAlg.Generic
 
+let getSparseMatrix dimension interval =
+    let random = Random()
+    let multiplier = random.Next(10000);
+    Matrix.init dimension dimension
+        (fun i j ->
+            if i % interval = 0 then random.NextDouble() * float(multiplier)
+            else 0.0)
+
 let getHilbertMatrix dimension =
     Matrix.init dimension dimension (fun i j -> (/) 1.0 (float(i) + float(j) + 1.0))
 

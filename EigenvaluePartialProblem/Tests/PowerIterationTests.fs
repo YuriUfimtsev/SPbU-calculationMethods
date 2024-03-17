@@ -1,4 +1,4 @@
-module Tests
+module Tests.PowerIterationTests
 
 open EigenvaluePartialProblem
 open FsAlg.Generic
@@ -7,11 +7,11 @@ open FsUnit
 open Matrices
 
 [<Test>]
-let ``Method should converge on a matrix ...`` () =
+let ``Method should converge`` () =
     let matrix = getRandomNumbersMatrix 10
     let initialVector = getRandomNumbersVector 10
     let targetError = 0.1
-    PowerMethod.getEigenPair matrix initialVector targetError
+    PowerIteration.getEigenPair matrix initialVector targetError
     |> ignore
 
 [<Test>]
@@ -22,7 +22,7 @@ let ``Method's eigenvalue should be equal to the max FsAlg's eigenvalue within t
 
     let initialVector = getRandomNumbersVector 15
     let targetError = 0.001
-    let actualResult = PowerMethod.getEigenPair matrix initialVector targetError
+    let actualResult = PowerIteration.getEigenPair matrix initialVector targetError
 
     actualResult.Eigenvalue |> should (equalWithin targetError) fsAlg'sEigenValue
 
@@ -32,6 +32,6 @@ let ``Method's error should be less than target error`` () =
 
     let initialVector = getRandomNumbersVector 15
     let targetError = 0.001
-    let actualResult = PowerMethod.getEigenPair matrix initialVector targetError
+    let actualResult = PowerIteration.getEigenPair matrix initialVector targetError
 
     actualResult.PosteriorError |> should lessThan targetError

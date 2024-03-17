@@ -1,4 +1,4 @@
-module EigenvaluePartialProblem.PowerMethod
+module EigenvaluePartialProblem.PowerIteration
 
 open FsAlg.Generic
 
@@ -7,11 +7,9 @@ type EigenCalculationReport =
       Eigenvector : float Vector
       PosteriorError : float
       StepsCount : int }
-
+    
 let performStep matrix previousVector =
-    let newVector = matrix * previousVector
-    let newVectorNorm = newVector |> Vector.l2norm
-    newVector // / newVectorNorm
+    matrix * previousVector
     
 let calculatePosteriorError previousVector vector (eigenValue : float) =
     let numerator = vector - (eigenValue * previousVector)

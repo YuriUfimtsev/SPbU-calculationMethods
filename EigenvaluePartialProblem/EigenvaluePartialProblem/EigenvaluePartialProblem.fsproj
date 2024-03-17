@@ -6,8 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="PowerMethod.fs" />
-        <Compile Include="ScalarProductMethod.fs" />
+        <Compile Include="PowerIteration.fs" />
+        <Compile Include="ScalarProductIteration.fs" />
         <Compile Include="Matrices.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
