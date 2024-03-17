@@ -7,35 +7,63 @@ open FsUnit
 open Matrices
 open FsAlg.Generic
 
+let areFloatCollectionsEqual targetError zipCollection =
+    for pair in zipCollection do
+        pair |> fst |> should (equalWithin targetError) (pair |> snd)
+
 [<Test>]
-let ``Method should converge`` () =
-    let matrix =  getRandomSymmetricMatrix 5
-    let fsAlg'sEigenvalues = matrix |> Matrix.eigenvalues
+let ``Method based on max Gershgorin selection strategy should converge`` () =
+    let matrix =  getRandomSymmetricMatrix 10
     let targetError = 0.1
-    performMaxElementStrategy matrix targetError
+    performMaxGershgorinElementStrategy matrix targetError
     |> ignore
 
 [<Test>]
-let ``Method's eigenvalue should be equal to the max FsAlg's eigenvalue within target error`` () =
-    //let matrix = getRandomSymmetricMatrix 15
+let ``Method's (max Gershgorin selection) eigenvalue should be equal to the max FsAlg's eigenvalue within target error`` () =
+    let matrix = getRandomSymmetricMatrix 5
 
-    let matrix = matrix [[4.0; -2 ;2]
-                         [-2; 5; 0]
-                         [2; 0; 6]]
-    let fsAlg'sEigenvalues = matrix |> Matrix.eigenvalues
-    let fsAlg'sEigenvaluesNorm = fsAlg'sEigenvalues |> Vector.l2norm
+    let sortedFsAlg'sEigenvalues =
+        matrix
+        |> Matrix.eigenvalues
+        |> Vector.toSeq
+        |> Seq.sort
 
+    let targetError = 0.01
+    let actualResult = performMaxGershgorinElementStrategy matrix targetError
+    let sortedActualEigenvalues =
+        actualResult.Eigenvalues
+        |> Vector.toSeq
+        |> Seq.sort
+
+    sortedFsAlg'sEigenvalues
+    |> Seq.zip sortedActualEigenvalues
+    |> areFloatCollectionsEqual 0.1
+    
+
+[<Test>]
+let ``Method based on max selection strategy should converge`` () =
+    let matrix = getRandomSymmetricMatrix 10
     let targetError = 0.1
-    let actualResult = performMaxElementStrategy matrix targetError
+    performMaxSelectionStrategy matrix targetError
+    |> ignore
 
-    actualResult.Eigenvalues |> Vector.l2norm |> should (equalWithin targetError) fsAlg'sEigenvaluesNorm
+[<Test>]
+let ``Method's (max strategy) eigenvalue should be equal to the max FsAlg's eigenvalue within target error`` () =
+    let matrix = getRandomSymmetricMatrix 5
 
-// [<Test>]
-// let ``Method's error should be less than target error`` () =
-//     let matrix = getRandomNumbersMatrix 15
-//
-//     let initialVector = getRandomNumbersVector 15
-//     let targetError = 0.001
-//     let actualResult = PowerIteration.perform matrix initialVector targetError
-//
-//     actualResult.PosteriorError |> should lessThan targetError
+    let sortedFsAlg'sEigenvalues =
+        matrix
+        |> Matrix.eigenvalues
+        |> Vector.toSeq
+        |> Seq.sort
+
+    let targetError = 0.01
+    let actualResult = performMaxSelectionStrategy matrix targetError
+    let sortedActualEigenvalues =
+        actualResult.Eigenvalues
+        |> Vector.toSeq
+        |> Seq.sort
+
+    sortedFsAlg'sEigenvalues
+    |> Seq.zip sortedActualEigenvalues
+    |> areFloatCollectionsEqual 0.1

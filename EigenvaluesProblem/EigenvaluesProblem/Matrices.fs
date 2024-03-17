@@ -6,7 +6,7 @@ open System
 let getRandomSymmetricMatrix dimension =
     let random = Random()
     let multiplier = random.Next(10);
-    Matrix.initSymmetric dimension (fun _ _ -> random.NextDouble() * float(multiplier))///
+    Matrix.initSymmetric dimension (fun _ _ -> random.NextDouble() * float(multiplier))
 
 let getSparseMatrix dimension interval =
     let random = Random()
