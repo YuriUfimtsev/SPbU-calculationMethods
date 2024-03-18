@@ -3,6 +3,25 @@ module EigenvaluesProblem.Matrices
 open FsAlg.Generic
 open System
 
+let getSymmetricSparseDiagonalDominanceMatrix dimension =
+    let random = Random()
+    let multiplier = random.Next(10);
+    let diagonalElements = Seq.init dimension
+                                (fun _ -> random.NextDouble() * float(multiplier))
+                           |> Seq.toArray
+    let nonSymmetricMatrix = Matrix.init dimension dimension
+                                (fun i j ->
+                                if i = j then diagonalElements[i]
+                                elif i > j then
+                                    if j <> 0 && (%) j 5 = 0 then (/) diagonalElements[i] (float(dimension * dimension))
+                                    else 0.0
+                                else 0.0)
+
+    Matrix.init dimension dimension
+        (fun i j ->
+            if i < j then nonSymmetricMatrix[j, i]
+            else nonSymmetricMatrix[i, j])
+        
 let getRandomSymmetricMatrix dimension =
     let random = Random()
     let multiplier = random.Next(10);
@@ -10,7 +29,7 @@ let getRandomSymmetricMatrix dimension =
 
 let getSparseMatrix dimension interval =
     let random = Random()
-    let multiplier = random.Next(100)
+    let multiplier = random.Next(10)
     Matrix.init dimension dimension
         (fun i _ ->
             if i % interval = 0 then random.NextDouble() * float(multiplier)

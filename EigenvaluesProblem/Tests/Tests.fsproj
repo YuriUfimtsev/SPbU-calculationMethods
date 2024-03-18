@@ -10,6 +10,8 @@
 
     <ItemGroup>
         <Compile Include="JacobiTests.fs" />
+        <Compile Include="JacobiGershgorin'sSelectionTests.fs" />
+        <Compile Include="JacobiMaxSelectionTests.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 

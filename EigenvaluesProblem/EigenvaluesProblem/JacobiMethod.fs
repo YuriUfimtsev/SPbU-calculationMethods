@@ -1,10 +1,6 @@
 module EigenvaluesProblem.JacobiMethod
 
-open System.Linq.Expressions
 open FsAlg.Generic
-open Matrices
-open System
-open AuxiliaryOperations
 
 type JacobiResult =
     { Eigenvalues : float Vector
@@ -55,7 +51,7 @@ let getRotationMatrix position (symmetricMatrix : float Matrix) =
             | x, y when x = j && y = i -> sin
             | _ -> 0.0)
 
-let getRowSumVector matrix =
+let getRowSumVector (matrix : float Matrix) =
     Vector.init (matrix |> Matrix.rows)
         (fun i ->
         matrix[i, i]
@@ -67,65 +63,3 @@ let isFinalStep targetError (rowSumVector : float Vector) =
     rowSumVector
     |> Vector.exists (fun rowSum -> rowSum.CompareTo(targetError) > 0)
     |> not
-
-let getMaxGershgorinElementPosition symmetricMatrix (rowSumVector : float Vector) =
-    let rowNumber = rowSumVector |> Vector.toSeq |> maxIndex
-    let columnNumber =
-       symmetricMatrix
-       |> Matrix.row rowNumber
-       |> Matrix.toSeq
-       |> Seq.mapi (fun index element ->
-           if index = rowNumber
-           then 0.0
-           else abs(element))
-       |> maxIndex
-    rowNumber, columnNumber
-
-let performMaxGershgorinElementStrategy (symmetricMatrix : float Matrix) targetError =
-    let rec loop previousMatrix rowSumVector stepsCounter =
-        if (rowSumVector |> isFinalStep targetError)
-        then
-            { Eigenvalues = previousMatrix |> Matrix.diagonal
-              StepsCount = stepsCounter + 1 }
-        else
-            let maxElementPosition = getMaxGershgorinElementPosition previousMatrix rowSumVector
-            let rotationMatrix = getRotationMatrix maxElementPosition previousMatrix
-            let newMatrix = (rotationMatrix |> Matrix.transpose) * previousMatrix * rotationMatrix
-              
-            loop
-                newMatrix
-                (newMatrix |> getRowSumVector)
-                (stepsCounter + 1)
-
-    loop symmetricMatrix (symmetricMatrix |> getRowSumVector) 0
-
-let getMaxElementPosition symmetricMatrix =
-    let matrixDimension = symmetricMatrix |> Matrix.rows
-    let seqPositionIndex =
-        symmetricMatrix
-        |> Matrix.toSeq
-        |> Seq.mapi (fun index element ->
-           if index % (matrixDimension + 1) = 0
-           then 0.0
-           else abs(element))
-        |> maxIndex
-    seqPositionIndex / matrixDimension, seqPositionIndex % matrixDimension
-
-
-let performMaxSelectionStrategy (symmetricMatrix : float Matrix) targetError =
-    let rec loop previousMatrix rowSumVector stepsCounter =
-        if (rowSumVector |> isFinalStep targetError)
-        then
-            { Eigenvalues = previousMatrix |> Matrix.diagonal
-              StepsCount = stepsCounter + 1 }
-        else
-            let maxPosition = getMaxElementPosition previousMatrix
-            let rotationMatrix = getRotationMatrix maxPosition previousMatrix
-            let newMatrix = (rotationMatrix |> Matrix.transpose) * previousMatrix * rotationMatrix
-              
-            loop
-                newMatrix
-                (newMatrix |> getRowSumVector)
-                (stepsCounter + 1)
-
-    loop symmetricMatrix (symmetricMatrix |> getRowSumVector) 0
