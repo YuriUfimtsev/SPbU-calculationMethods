@@ -7,6 +7,7 @@ open MaxSelectionStrategy
 open Matrices
 open JacobiTests
 open FsAlg.Generic
+open FsUnit
 
 [<Test>]
 let ``Method based on max selection strategy should converge`` () =
@@ -35,3 +36,17 @@ let ``Method's (max strategy) eigenvalue should be equal to the max FsAlg's eige
     sortedFsAlg'sEigenvalues
     |> Seq.zip sortedActualEigenvalues
     |> areFloatCollectionsEqual 0.1
+
+[<Test>]
+let ``Method's eigenvalues should be in Gershgorin's circles`` () =
+    let matrix = getRandomSymmetricMatrix 5
+    
+    let targetError = 0.01
+    let actualResult = perform matrix targetError
+    let resultEigenvalues = actualResult.Eigenvalues
+    
+    let Gershgorin'sField = matrix |> getGershgorin'sField
+    
+    resultEigenvalues
+    |> Vector.exists (doesBelongToGershgorin'sField Gershgorin'sField >> not)
+    |> should be False

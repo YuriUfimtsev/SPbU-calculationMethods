@@ -1,6 +1,7 @@
 module EigenvaluesProblem.JacobiMethod
 
 open FsAlg.Generic
+open System
 
 type JacobiResult =
     { Eigenvalues : float Vector
@@ -63,3 +64,13 @@ let isFinalStep targetError (rowSumVector : float Vector) =
     rowSumVector
     |> Vector.exists (fun rowSum -> rowSum.CompareTo(targetError) > 0)
     |> not
+    
+let getGershgorin'sField matrix =
+    let centers = matrix |> Matrix.diagonal
+    let radii = matrix |> getRowSumVector
+    List.init (Vector.length radii)
+        (fun i -> (centers[i] - radii[i], centers[i] + radii[i]))
+        
+let doesBelongToGershgorin'sField field (element : float) =
+    field
+    |> List.exists (fun (a, b) -> element.CompareTo(a) >= 0 && element.CompareTo(b) <= 0)
